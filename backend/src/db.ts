@@ -1,4 +1,28 @@
+import { Pool } from "pg";
+
+console.log("DB CONFIG USED BY NODE:");
+console.log({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+});
+
+export const pool = new Pool({
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+});
+
 export const connectDB = async () => {
-  // Database connection logic can be added here
-  console.log("✅ Database connected");
+  try {
+    await pool.query("SELECT 1");
+    console.log("✅ Database connected");
+  } catch (error) {
+    console.error("❌ Database connection failed:", error);
+    process.exit(1);
+  }
 };
